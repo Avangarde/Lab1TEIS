@@ -4,6 +4,9 @@
  */
 package dev.colswe.lab.junit.logica;
 
+import dev.colswe.lab.junit.modelo.Entidad;
+import dev.colswe.lab.junit.modelo.EntidadDAO;
+import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,22 +20,32 @@ import static org.junit.Assert.*;
  * @author juanmanuelmartinezromero
  */
 public class ControlTest {
-    
+
+    private static final Control CONTROL = new Control();
+    private static final EntidadDAO ENTIDAD_DAO = new EntidadDAO();
+    private static final ArrayList<Entidad> ARREGLO_VACIO = new ArrayList<Entidad>();
+    private static final ArrayList<Entidad> ARREGLO_NO_VACIO = new ArrayList<Entidad>();
+
     public ControlTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
+        ARREGLO_NO_VACIO.add(new Entidad(new Long(1000), "Tornillo", new Double(1000)));
+        ARREGLO_NO_VACIO.add(new Entidad(new Long(10), "Pinza", new Double(5000)));
+        ARREGLO_NO_VACIO.add(new Entidad(new Long(100), "Tuerca", new Double(1200)));
+        ARREGLO_NO_VACIO.add(new Entidad(new Long(1), "Taladro", new Double(75000)));
+        ARREGLO_NO_VACIO.add(new Entidad(new Long(2), "Taladro", new Double(0)));
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
