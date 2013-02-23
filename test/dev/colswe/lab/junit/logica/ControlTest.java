@@ -56,9 +56,10 @@ public class ControlTest {
 
     /**
      */
-    @Test
+    @Test(expected=NumberFormatException.class)
     public void testAgregarEntidad() {
         System.out.println("agregarEntidad");
+        
         //Prueba para identificar si agrega un elemento normalmente.
         Long cantidad = new Long(3);
         String nombre = "Llave de tubo";
@@ -69,6 +70,11 @@ public class ControlTest {
         int tamSiguiente=SISTEMA.getEntidades().size();
         assertEquals(tamAnterior+1, tamSiguiente);
         
+        nombre="Alicates";
+        tamAnterior=SISTEMA.getEntidades().size();
+        instance.agregarEntidad(++cantidad, nombre, new Double(nombre));
+        tamSiguiente=SISTEMA.getEntidades().size();
+        assertEquals(tamAnterior, tamSiguiente);
     }
 
     /**
