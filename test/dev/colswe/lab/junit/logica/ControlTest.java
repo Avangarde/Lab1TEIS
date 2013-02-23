@@ -6,6 +6,7 @@ package dev.colswe.lab.junit.logica;
 
 import dev.colswe.lab.junit.modelo.Entidad;
 import dev.colswe.lab.junit.modelo.EntidadDAO;
+import dev.colswe.lab.junit.modelo.Sistema;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.After;
@@ -22,6 +23,8 @@ import static org.junit.Assert.*;
 public class ControlTest {
 
     private static final Control CONTROL = new Control();
+    private static final Sistema SISTEMA = Sistema.getInstance();
+    
     private static final EntidadDAO ENTIDAD_DAO = new EntidadDAO();
     private static final ArrayList<Entidad> ARREGLO_VACIO = new ArrayList<Entidad>();
     private static final ArrayList<Entidad> ARREGLO_NO_VACIO = new ArrayList<Entidad>();
@@ -36,6 +39,7 @@ public class ControlTest {
         ARREGLO_NO_VACIO.add(new Entidad(new Long(100), "Tuerca", new Double(1200)));
         ARREGLO_NO_VACIO.add(new Entidad(new Long(1), "Taladro", new Double(75000)));
         ARREGLO_NO_VACIO.add(new Entidad(new Long(2), "Taladro", new Double(0)));
+        SISTEMA.setEntidades(ARREGLO_NO_VACIO);
     }
 
     @AfterClass
@@ -51,24 +55,26 @@ public class ControlTest {
     }
 
     /**
-     * Test of agregarEntidad method, of class Control.
      */
     @Test
     public void testAgregarEntidad() {
         System.out.println("agregarEntidad");
-        Long cantidad = null;
-        String nombre = "";
-        Double precioUnitario = null;
+        //Prueba para identificar si agrega un elemento normalmente.
+        Long cantidad = new Long(3);
+        String nombre = "Llave de tubo";
+        Double precioUnitario = new Double(30000);
         Control instance = new Control();
+        int tamAnterior=SISTEMA.getEntidades().size();
         instance.agregarEntidad(cantidad, nombre, precioUnitario);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int tamSiguiente=SISTEMA.getEntidades().size();
+        assertEquals(tamAnterior+1, tamSiguiente);
+        
     }
 
     /**
      * Test of agregarEntidades method, of class Control.
      */
-    @Test
+    //@Test
     public void testAgregarEntidades() {
         System.out.println("agregarEntidades");
         Object[][] entidades = null;
@@ -81,7 +87,7 @@ public class ControlTest {
     /**
      * Test of ordenar method, of class Control.
      */
-    @Test
+    //@Test
     public void testOrdenar() {
         System.out.println("ordenar");
         String nombreCampo = "";
