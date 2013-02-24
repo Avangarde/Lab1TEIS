@@ -24,7 +24,6 @@ public class ControlTest {
 
     private static final Control CONTROL = new Control();
     private static final Sistema SISTEMA = Sistema.getInstance();
-    
     private static final EntidadDAO ENTIDAD_DAO = new EntidadDAO();
     private static final ArrayList<Entidad> ARREGLO_VACIO = new ArrayList<Entidad>();
     private static final ArrayList<Entidad> ARREGLO_NO_VACIO = new ArrayList<Entidad>();
@@ -56,38 +55,84 @@ public class ControlTest {
 
     /**
      */
-    @Test(expected=NumberFormatException.class)
+    @Test
     public void testAgregarEntidad() {
-        System.out.println("agregarEntidad");
-        
         //Prueba para identificar si agrega un elemento normalmente.
         Long cantidad = new Long(3);
         String nombre = "Llave de tubo";
         Double precioUnitario = new Double(30000);
-        Control instance = new Control();
-        int tamAnterior=SISTEMA.getEntidades().size();
-        instance.agregarEntidad(cantidad, nombre, precioUnitario);
-        int tamSiguiente=SISTEMA.getEntidades().size();
-        assertEquals(tamAnterior+1, tamSiguiente);
-        
-        nombre="Alicates";
-        tamAnterior=SISTEMA.getEntidades().size();
-        instance.agregarEntidad(++cantidad, nombre, new Double(nombre));
-        tamSiguiente=SISTEMA.getEntidades().size();
-        assertEquals(tamAnterior, tamSiguiente);
+        int tamAnterior = SISTEMA.getEntidades().size();
+        CONTROL.agregarEntidad(cantidad, nombre, precioUnitario);
+        int tamSiguiente = SISTEMA.getEntidades().size();
+        assertEquals(tamAnterior + 1, tamSiguiente);
+
+
+    }
+
+    @Test
+    public void testNoAgregarEntidad() {
+        String nombre = "Alicates";
+        int tamAnterior = SISTEMA.getEntidades().size();
+        try {
+            CONTROL.agregarEntidad(new Long(3000), nombre, new Double(nombre));
+        } catch (NumberFormatException numberFormatException) {
+            System.out.println("Ha ocurrido un numberFormatException");
+        } finally {
+            int tamSiguiente = SISTEMA.getEntidades().size();
+            assertEquals(tamAnterior, tamSiguiente);
+        }
+
     }
 
     /**
      * Test of agregarEntidades method, of class Control.
      */
-    //@Test
+    @Test
     public void testAgregarEntidades() {
-        System.out.println("agregarEntidades");
-        Object[][] entidades = null;
-        Control instance = new Control();
-        instance.agregarEntidades(entidades);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Object[][] entidades = new Object[][]{
+            {new Long(2000), "Tuercas", new Double(250)}, // Agrega una Entidad Tornillo con Cantidad 1000 y precio 500
+            {new Long(100), "Llave 14", new Double(2550)}, // Agrega una Entidad Pinza con Cantidad 5000 y precio 10
+            {new Long(100), "Tuerca", new Double(1200)}, // Agrega una Entidad Tornillo con Cantidad 1000 y precio 500
+            {new Long(1), "Taladro", new Double(75000)}, // Agrega una Entidad Taladro con Cantidad 1 y precio 75000
+            {new Long(2), "Taladro", new Double(0)}};
+        int tamAnterior = SISTEMA.getEntidades().size();
+        CONTROL.agregarEntidades(entidades);
+        int tamSiguiente = SISTEMA.getEntidades().size();
+        assertEquals(tamAnterior + entidades.length, tamSiguiente);
+    }
+
+    @Test
+    public void testNoAgregarTodasEntidades() {
+        Object[][] entidades = new Object[4][4];
+
+        entidades[0][0] = new Long(2000);
+        entidades[0][1] = "Tuercas";
+        entidades[0][2] = new Double(250);
+
+        try {
+            entidades[1][0] = new Long(100);
+            entidades[1][1] = "Llave 14";
+            entidades[1][2] = new Double("Llave 14");
+        } catch (NumberFormatException numberFormatException) {
+            System.out.println("Ha ocurrido una o varias excepciones de NullPointerException");
+        }
+
+        entidades[2][0] = new Long(100);
+        entidades[2][1] = "Tuerca";
+        entidades[2][2] = new Double(1200);
+
+        try {
+            entidades[3][0] = new Long(2);
+            entidades[3][1] = "Taladro";
+            entidades[3][2] = new Double("Taladro");
+        } catch (NumberFormatException numberFormatException) {
+            System.out.println("Ha ocurrido una o varias excepciones de NullPointerException");
+        }
+
+        int tamAnterior = SISTEMA.getEntidades().size();
+        CONTROL.agregarEntidades(entidades);
+        int tamSiguiente = SISTEMA.getEntidades().size();
+        assertEquals(tamAnterior + entidades.length, tamSiguiente);
     }
 
     /**
