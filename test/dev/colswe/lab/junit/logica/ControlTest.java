@@ -8,6 +8,7 @@ import dev.colswe.lab.junit.modelo.Entidad;
 import dev.colswe.lab.junit.modelo.EntidadDAO;
 import dev.colswe.lab.junit.modelo.Sistema;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,6 +18,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
+ * Clase para Testear la clase control.
  *
  * @author juanmanuelmartinezromero
  */
@@ -55,7 +57,7 @@ public class ControlTest {
 
     /**
      */
-    @Test
+    //@Test
     public void testAgregarEntidad() {
         //Prueba para identificar si agrega un elemento normalmente.
         Long cantidad = new Long(3);
@@ -65,11 +67,9 @@ public class ControlTest {
         CONTROL.agregarEntidad(cantidad, nombre, precioUnitario);
         int tamSiguiente = SISTEMA.getEntidades().size();
         assertEquals(tamAnterior + 1, tamSiguiente);
-
-
     }
 
-    @Test
+    //@Test
     public void testNoAgregarEntidad() {
         String nombre = "Alicates";
         int tamAnterior = SISTEMA.getEntidades().size();
@@ -81,13 +81,12 @@ public class ControlTest {
             int tamSiguiente = SISTEMA.getEntidades().size();
             assertEquals(tamAnterior, tamSiguiente);
         }
-
     }
 
     /**
      * Test of agregarEntidades method, of class Control.
      */
-    @Test
+    //@Test
     public void testAgregarEntidades() {
         Object[][] entidades = new Object[][]{
             {new Long(2000), "Tuercas", new Double(250)}, // Agrega una Entidad Tornillo con Cantidad 1000 y precio 500
@@ -101,7 +100,7 @@ public class ControlTest {
         assertEquals(tamAnterior + entidades.length, tamSiguiente);
     }
 
-    @Test
+    //@Test
     public void testNoAgregarTodasEntidades() {
         Object[][] entidades = new Object[4][4];
 
@@ -138,15 +137,41 @@ public class ControlTest {
     /**
      * Test of ordenar method, of class Control.
      */
-    //@Test
+    @Test
     public void testOrdenar() {
-        System.out.println("ordenar");
-        String nombreCampo = "";
-        Control instance = new Control();
-        Collection expResult = null;
-        Collection result = instance.ordenar(nombreCampo);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        /*
+         * Aqui deberia ordenar por cada uno de los metodos descritos
+         * A decir, por nombre, cantidad, precio unitario y total
+         */
+
+        //  Deberia ordenar por cantidad
+
+        SISTEMA.setEntidades(ARREGLO_NO_VACIO);
+        Entidad cant1 = new Entidad(new Long(1), "Taladro", new Double(75000));
+        Entidad cant2 = new Entidad(new Long(2), "Taladro", new Double(0));
+        Entidad cant3 = new Entidad(new Long(10), "Pinza", new Double(5000));
+        Entidad cant4 = new Entidad(new Long(100), "Tuerca", new Double(1200));
+        Entidad cant5 = new Entidad(new Long(1000), "Tornillo", new Double(1000));
+
+        cant1.setId(new Long(4));
+        cant2.setId(new Long(5));
+        cant3.setId(new Long(2));
+        cant4.setId(new Long(3));
+        cant5.setId(new Long(1));
+
+        Collection<Entidad> prueba = new ArrayList<Entidad>();
+        prueba.add(cant1);
+        prueba.add(cant2);
+        prueba.add(cant3);
+        prueba.add(cant4);
+        prueba.add(cant5);
+
+        String expected=prueba.toString();
+        String actuals =CONTROL.ordenar(Entidad.CAMPO_CANTIDAD).toString();
+        
+        System.out.println("expected=actuals?"+expected.equals(actuals));
+        assertEquals(expected, actuals);
+
     }
 }
