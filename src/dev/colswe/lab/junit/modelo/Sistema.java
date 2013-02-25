@@ -37,7 +37,7 @@ public class Sistema {
      * Setea la lista de Entidades
      * @param entidades lista de entidades a setear
      */
-    public void setEntidades(final Collection<Entidad> entidades) {
+    public void setEntidades(/*final*/ Collection<Entidad> entidades) {
         this.entidades = entidades;
     }
 }
