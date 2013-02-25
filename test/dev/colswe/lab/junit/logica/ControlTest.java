@@ -65,7 +65,7 @@ public class ControlTest {
         assertEquals(tamAnterior + 1, tamSiguiente);
         //  En el siguiente codigo verifica que la entidad es exactamente igual a la que se agregó
         Entidad entidad = new Entidad(new Long(3), "Llave de tubo", new Double(30000));
-        entidad.setId(new Long(5));
+        entidad.setId(((Entidad) getLastElement(sistema.getEntidades())).getId());
         assertEquals(getLastElement(sistema.getEntidades()).toString(), entidad.toString());
     }
 
@@ -152,60 +152,96 @@ public class ControlTest {
 
         Sistema sistema = Sistema.getInstance();
 
-        Collection<Entidad> prueba = new ArrayList<Entidad>();
+        Collection<Entidad> esperado = new ArrayList<Entidad>();
         Entidad ent1 = new Entidad(new Long(1), "Taladro", new Double(75000));
         Entidad ent2 = new Entidad(new Long(2), "Taladro", new Double(0));
         Entidad ent3 = new Entidad(new Long(10), "Pinza", new Double(5000));
         Entidad ent4 = new Entidad(new Long(100), "Tuerca", new Double(1200));
         Entidad ent5 = new Entidad(new Long(1000), "Tornillo", new Double(1000));
+        Entidad ent6 = new Entidad(new Long(1), "Pines", new Double(1200));
+        Entidad ent7 = new Entidad(new Long(3), "Llave #14", new Double(25000));
 
         ent1.setId(new Long(4));
         ent2.setId(new Long(5));
         ent3.setId(new Long(2));
         ent4.setId(new Long(3));
         ent5.setId(new Long(1));
+        ent6.setId(new Long(6));
+        ent7.setId(new Long(7));
 
         //<editor-fold defaultstate="collapsed" desc="Prueba de Ordenar Cantidad sin datos repetidos">      
         //prueba.add(cant1);
-        prueba.add(ent2);
-        prueba.add(ent3);
-        prueba.add(ent4);
-        prueba.add(ent5);
+        esperado.add(ent2);
+        esperado.add(ent3);
+        esperado.add(ent4);
+        esperado.add(ent5);
 
-        sistema.setEntidades(prueba);
-        compareCollections(prueba, Entidad.CAMPO_CANTIDAD, "Cantidad sin datos repetidos");
+        sistema.setEntidades(esperado);
+        compareCollections(esperado, Entidad.CAMPO_CANTIDAD, "Cantidad sin datos repetidos");
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Prueba de Ordenar por Nombre sin datos repetidos">
-        prueba.add(ent3);
-        prueba.add(ent1);
-        prueba.add(ent5);
-        prueba.add(ent4);
-        compareCollections(prueba, Entidad.CAMPO_NOMBRE, "Nombre sin datos repetidos");
+        esperado.add(ent3);
+        esperado.add(ent1);
+        esperado.add(ent5);
+        esperado.add(ent4);
+        compareCollections(esperado, Entidad.CAMPO_NOMBRE, "Nombre sin datos repetidos");
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Prueba de Ordenar por precio Total sin datos repetidos">
-        prueba.add(ent2);
-        prueba.add(ent3);
-        prueba.add(ent1);
-        prueba.add(ent4);
-        prueba.add(ent5);
-        compareCollections(prueba, Entidad.CAMPO_PRECIO_TOTAL, "Precio Total sin datos repetidos");
+        esperado.add(ent2);
+        esperado.add(ent3);
+        esperado.add(ent1);
+        esperado.add(ent4);
+        esperado.add(ent5);
+        compareCollections(esperado, Entidad.CAMPO_PRECIO_TOTAL, "Precio Total sin datos repetidos");
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Prueba de Ordenar por precio Unitario sin datos repetidos">
-        prueba.add(ent2);
-        prueba.add(ent5);
-        prueba.add(ent4);
-        prueba.add(ent3);
-        prueba.add(ent1);
-        compareCollections(prueba, Entidad.CAMPO_PRECIO_UNITARIO, "precio Unitario sin datos repetidos");
+        esperado.add(ent2);
+        esperado.add(ent5);
+        esperado.add(ent4);
+        esperado.add(ent3);
+        esperado.add(ent1);
+        compareCollections(esperado, Entidad.CAMPO_PRECIO_UNITARIO, "precio Unitario sin datos repetidos");
         //</editor-fold>
+        
 
+    }
+
+    @Test
+    public void testOrdenarCantRep() {
+        Sistema sistema = Sistema.getInstance();
+        Collection<Entidad> esperado = new ArrayList<Entidad>();
+        Entidad ent1 = new Entidad(new Long(1), "Taladro", new Double(75000));
+        Entidad ent2 = new Entidad(new Long(2), "Taladro", new Double(0));
+        Entidad ent3 = new Entidad(new Long(10), "Pinza", new Double(5000));
+        Entidad ent4 = new Entidad(new Long(100), "Tuerca", new Double(1200));
+        Entidad ent5 = new Entidad(new Long(1000), "Tornillo", new Double(1000));
+        Entidad ent6 = new Entidad(new Long(1), "Pines", new Double(1200));
+        Entidad ent7 = new Entidad(new Long(3), "Llave #14", new Double(25000));
+
+        ent1.setId(new Long(4));
+        ent2.setId(new Long(5));
+        ent3.setId(new Long(2));
+        ent4.setId(new Long(3));
+        ent5.setId(new Long(1));
+        ent6.setId(new Long(6));
+        ent7.setId(new Long(7));
+
+        esperado.add(ent1);
+        esperado.add(ent6);
+        esperado.add(ent2);
+        esperado.add(ent7);
+        esperado.add(ent3);
+        esperado.add(ent4);
+        esperado.add(ent5);
+        sistema.setEntidades(esperado);
+        compareCollections(esperado, Entidad.CAMPO_CANTIDAD, "Cantidad con datos repetidos");
     }
 
     private void compareCollections(Collection<Entidad> expected, String byAttr, String description) {
         String expctd = expected.toString();
         String actls = CONTROL.ordenar(byAttr).toString();
+        System.out.println("Pasa la prueba de ordenar por " + description + "?: " + expctd.equals(actls));
         assertEquals(expctd, actls);
-        System.out.println("Paso la prueba de ordenar por " + description + "?: " + expctd.equals(actls));
         expected.clear();
     }
 
