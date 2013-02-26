@@ -233,7 +233,14 @@ public class ControlTest {
         
 
     }
-
+    
+    //<editor-fold defaultstate="collapsed" desc="Prueba de Ordenar por cantidad con datos repetidos">
+    
+    //PD: El test no pasa porque se espera que aparezcan elementos repetidos
+    /*
+     * PD: No realice los demas test correspondientes a los demás atributos ya 
+    que la diferencia no se puede ver correctamente en la salida
+     */
     @Test
     public void testOrdenarCantRep() {
         Sistema sistema = Sistema.getInstance();
@@ -245,7 +252,7 @@ public class ControlTest {
         Entidad ent5 = new Entidad(new Long(1000), "Tornillo", new Double(1000));
         Entidad ent6 = new Entidad(new Long(1), "Pines", new Double(1200));
         Entidad ent7 = new Entidad(new Long(3), "Llave #14", new Double(25000));
-
+        
         ent1.setId(new Long(4));
         ent2.setId(new Long(5));
         ent3.setId(new Long(2));
@@ -253,7 +260,7 @@ public class ControlTest {
         ent5.setId(new Long(1));
         ent6.setId(new Long(6));
         ent7.setId(new Long(7));
-
+        
         esperado.add(ent1);
         esperado.add(ent6);
         esperado.add(ent2);
@@ -264,6 +271,7 @@ public class ControlTest {
         sistema.setEntidades(esperado);
         compareCollections(esperado, Entidad.CAMPO_CANTIDAD, "Cantidad con datos repetidos");
     }
+    //</editor-fold>
 
     //Test para verificar que lance una NoSuchMethodException (P.D: Deberia funcionar)
 //    @Test(expected=NoSuchMethodException.class)
