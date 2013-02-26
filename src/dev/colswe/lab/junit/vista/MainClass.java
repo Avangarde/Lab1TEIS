@@ -27,7 +27,7 @@ public class MainClass {
                     {new Long(1000), "Tornillo", new Double(1000)},
                     {new Long(1), "Pines", new Double(1200)},
                     {new Long(3), "Llave #14", new Double(25000)}}); // Agrega una Entidad Taladro con Cantidad 1 y precio 75000
-        for (final Entidad e : c.ordenar(Entidad.CAMPO_CANTIDAD)) { // Por cada entidad en la coleccion Ordenar, imprime el orden segun el nombre del Campo
+        for (final Entidad e : c.ordenar("Entidad.CAMPO_CANTIDAD")) { // Por cada entidad en la coleccion Ordenar, imprime el orden segun el nombre del Campo
             System.out.println(e);
         }
     }

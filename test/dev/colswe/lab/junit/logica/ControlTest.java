@@ -12,10 +12,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Clase para Testear la clase control.
@@ -63,8 +63,31 @@ public class ControlTest {
         CONTROL.agregarEntidad(new Long(3), "Llave de tubo", new Double(30000));
         int tamSiguiente = sistema.getEntidades().size();
         assertEquals(tamAnterior + 1, tamSiguiente);
+        
         //  En el siguiente codigo verifica que la entidad es exactamente igual a la que se agregó
         Entidad entidad = new Entidad(new Long(3), "Llave de tubo", new Double(30000));
+        entidad.setId(((Entidad) getLastElement(sistema.getEntidades())).getId());
+        assertEquals(getLastElement(sistema.getEntidades()).toString(), entidad.toString());
+        
+        //  En el siguiente codigo verifica si es valido ingresar atributos nulos a la entidad
+        tamAnterior = sistema.getEntidades().size();
+        CONTROL.agregarEntidad(null, null, null);
+        tamSiguiente = sistema.getEntidades().size();
+        assertEquals(tamAnterior + 1, tamSiguiente);
+        
+        entidad = new Entidad(null, null, null);
+        entidad.setId(((Entidad) getLastElement(sistema.getEntidades())).getId());
+        assertEquals(getLastElement(sistema.getEntidades()).toString(), entidad.toString());
+        
+        //  En el siguiente codigo se verifica si se pueden ingresar valores negativos en la cantidad y precio unitario
+        
+        tamAnterior = sistema.getEntidades().size();
+        CONTROL.agregarEntidad(new Long(-3), "Llave de tubo", new Double(-30000));
+        tamSiguiente = sistema.getEntidades().size();
+        assertEquals(tamAnterior + 1, tamSiguiente);
+        
+        //  En el siguiente codigo verifica que la entidad es exactamente igual a la que se agregó
+        entidad = new Entidad(new Long(-3), "Llave de tubo", new Double(-30000));
         entidad.setId(((Entidad) getLastElement(sistema.getEntidades())).getId());
         assertEquals(getLastElement(sistema.getEntidades()).toString(), entidad.toString());
     }
@@ -100,6 +123,11 @@ public class ControlTest {
         CONTROL.agregarEntidades(entidades);
         int tamSiguiente = sistema.getEntidades().size();
         assertEquals(tamAnterior + entidades.length, tamSiguiente);
+    }
+    
+    @Test(expected=NullPointerException.class)
+    public void testAgregarEntidadesNull() {
+        CONTROL.agregarEntidades(null);        
     }
 
     @Test
@@ -237,6 +265,14 @@ public class ControlTest {
         compareCollections(esperado, Entidad.CAMPO_CANTIDAD, "Cantidad con datos repetidos");
     }
 
+    //Test para verificar que lance una NoSuchMethodException (P.D: Deberia funcionar)
+//    @Test(expected=NoSuchMethodException.class)
+//    public void testOrdenarNoMethod(){
+//        Sistema sistema=Sistema.getInstance();
+//        sistema.setEntidades(ARREGLO_NO_VACIO);
+//        CONTROL.ordenar("Entidad.CualquierCosa");
+//    }
+    
     private void compareCollections(Collection<Entidad> expected, String byAttr, String description) {
         String expctd = expected.toString();
         String actls = CONTROL.ordenar(byAttr).toString();
